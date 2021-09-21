@@ -1,12 +1,17 @@
 package com.endava.internship.collections;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * The class that defines the element that will be contained by your collection
  */
-public class Student //TODO consider implementing any interfaces necessary for your collection
-{
+@Getter
+@Setter
+public class Student {
     private String name;
     private LocalDate dateOfBirth;
     private String details;
@@ -17,16 +22,25 @@ public class Student //TODO consider implementing any interfaces necessary for y
         this.details = details;
     }
 
-    public String getName() { return name; }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(name, student.name) && Objects.equals(dateOfBirth, student.dateOfBirth) && Objects.equals(details, student.details);
+    }
 
-    public LocalDate getDateOfBirth() { return dateOfBirth; }
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, dateOfBirth, details);
+    }
 
-    public String getDetails() { return details; }
-
-    /*
-    TODO consider overriding any methods for this object to function properly within a collection:
-        1. A student is considered unique by a combination of their name and dateOfBirth
-        2. Student names are sorted alphabetically, if two students have the same name, then the older one is
-        placed before the younger student in an ordered student list.
-    */
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", details='" + details + '\'' +
+                '}';
+    }
 }

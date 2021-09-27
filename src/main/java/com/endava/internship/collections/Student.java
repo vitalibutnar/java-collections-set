@@ -1,16 +1,11 @@
 package com.endava.internship.collections;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * The class that defines the element that will be contained by your collection
  */
-@Getter
-@Setter
 public class Student {
     private String name;
     private LocalDate dateOfBirth;

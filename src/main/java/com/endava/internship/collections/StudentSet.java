@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public class StudentSet<E> implements Set<E> {
-    static final int DEFAULT_INITIAL_CAPACITY = 16;
+    static final int DEFAULT_INITIAL_CAPACITY = 8;
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
     private Node<E>[] set;
@@ -154,7 +154,10 @@ public class StudentSet<E> implements Set<E> {
         if ((float) size / (float) set.length < DEFAULT_LOAD_FACTOR)
             return;
         Node<E>[] tmp = new Node[set.length * 2];
-        System.arraycopy(set, 0, tmp, 0, set.length);
+        for (Node<E> node : set) {
+            if (node != null)
+                tmp[(set.length * 2 - 1) & node.hash] = node;
+        }
         set = tmp;
     }
 
@@ -240,10 +243,13 @@ public class StudentSet<E> implements Set<E> {
         public void remove() {
             if (current == null)
                 throw new IllegalStateException();
-            if (set[index - 1].next == null)
-                set[index - 1] = null;
-            else {
-                removeFromNode(current.value, current.hash, index - 1);
+            int hash = current.hash;
+            int position = (set.length - 1) & hash;
+            if (set[position].next == null) {
+                set[position] = null;
+                size--;
+            } else {
+                removeFromNode(current.value, hash, position);
             }
         }
 
